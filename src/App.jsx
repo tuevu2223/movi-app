@@ -1,10 +1,13 @@
 import "./App.css";
+import Header from "./components/Header";
+// import FeatureMovies from "./components/FeatureMovies";
 
 function App() {
   return (
-    <>
-      <p className="size-0.5 text-2xl font-bold">hello</p>
-    </>
+    <div className="">
+      <Header />
+      {/* <FeatureMovies /> */}
+    </div>
   );
 }
 
