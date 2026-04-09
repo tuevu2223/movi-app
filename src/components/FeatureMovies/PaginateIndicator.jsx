@@ -1,7 +1,7 @@
 function PaginateIndicator({
   movies,
   movieIdActive,
-  // setMovieIdActive,
+  setMovieIdActive,
 }) {
   
   return (
@@ -10,9 +10,9 @@ function PaginateIndicator({
         {movies.map((movie) => (
           <li
             key={movie.id}
-            // onClick={() => {
-            //   setMovieIdActive(movie.id);
-            // }}
+            onClick={() => {
+              setMovieIdActive(movie.id);
+            }}
             className={`h-1 w-8 cursor-pointer ${movie.id === movieIdActive ? "bg-white" : "bg-white/70"}`}
           ></li>
         ))}
