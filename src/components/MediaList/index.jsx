@@ -1,48 +1,34 @@
 import { useEffect, useState } from "react";
 import CardMovie from "./CardMovie";
 
-const TABS = [
-  {
-    id: "all",
-    label: "All",
-  },
-  {
-    id: "movie",
-    label: "Movie",
-  },
-  {
-    id: "tv",
-    label: "TV Show",
-  },
-];
-
-function MediaList() {
+function MediaList({ title, tabs }) {
   const [mediaList, setMediaList] = useState([]);
-  const [tabIdActive, setTabIdActive] = useState(TABS[0].id);
+  const [tabIdActive, setTabIdActive] = useState(tabs[0].id);
 
   useEffect(() => {
-    fetch(`https://api.themoviedb.org/3/trending/${tabIdActive}/day`, {
-      method: "GET",
-      headers: {
-        accept: "application/json",
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlMzQ3MTc2ZWUyYWI4Njc4ZWRlN2ZlMjBkZWQ5MmNkNCIsIm5iZiI6MTc2MDY5MTg1MC4yNzksInN1YiI6IjY4ZjIwNjhhNzVjOTExZWUxYjc3ZDk2NiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.LtwJzSShEpGK3gzQPQSDXqCnNgqRVnt005AFpQ3fv6w",
-      },
-    }).then(async (res) => {
-      const data = await res.json();
-      const trendingMediaList = data?.results.slice(0, 12);
-      setMediaList(trendingMediaList);
-    });
-  }, [tabIdActive]);
-
-  console.log({ mediaList });
+    const url = tabs.find((tab) => tab.id === tabIdActive).url;
+    if (url) {
+      fetch(`${url}`, {
+        method: "GET",
+        headers: {
+          accept: "application/json",
+          Authorization:
+            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlMzQ3MTc2ZWUyYWI4Njc4ZWRlN2ZlMjBkZWQ5MmNkNCIsIm5iZiI6MTc2MDY5MTg1MC4yNzksInN1YiI6IjY4ZjIwNjhhNzVjOTExZWUxYjc3ZDk2NiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.LtwJzSShEpGK3gzQPQSDXqCnNgqRVnt005AFpQ3fv6w",
+        },
+      }).then(async (res) => {
+        const data = await res.json();
+        const trendingMediaList = data?.results.slice(0, 12);
+        setMediaList(trendingMediaList);
+      });
+    }
+  }, [tabIdActive, tabs]);
 
   return (
     <div className="flex flex-col gap-4 bg-black px-8 py-12 text-[1.2vw] text-white">
       <div className="flex gap-4">
-        <p className="text-[2vw] font-bold">Trending</p>
+        <p className="text-[2vw] font-bold">{title}</p>
         <ul className="flex rounded border border-white">
-          {TABS.map((i) => (
+          {tabs.map((i) => (
             <li
               key={i.id}
               onClick={() => {
