@@ -4,9 +4,9 @@ import { useEffect, useState } from "react";
 
 function FeatureMovies() {
   const [movies, setMovies] = useState([]);
-  // const [movieIdActive, setMovieIdActive] = useState();
-  const [idLocation, setIdLocation] = useState(0);
-  const movieIdActive = movies?.[idLocation]?.id;
+  const [movieIdActive, setMovieIdActive] = useState();
+  // const [idLocation, setIdLocation] = useState(0);
+  // const movieIdActive = movies?.[idLocation]?.id;
 
   useEffect(() => {
     fetch("https://api.themoviedb.org/3/movie/popular", {
@@ -20,22 +20,22 @@ function FeatureMovies() {
       const data = await res.json();
       const populorMovies = data?.results.slice(0, 4);
       setMovies(populorMovies);
-      // setMovieIdActive(populorMovies?.[0].id);
+      setMovieIdActive(populorMovies?.[0].id);
     });
   }, []);
 
-  useEffect(() => {
-    if (movies.length === 0) return;
+  // useEffect(() => {
+  //   if (movies.length === 0) return;
 
-    const timer = setInterval(() => {
-      setIdLocation((prevIndex) => {
-        const nextIndex = (prevIndex + 1) % movies.length;
-        return nextIndex;
-      });
-    }, 2000);
+  //   const timer = setInterval(() => {
+  //     setIdLocation((prevIndex) => {
+  //       const nextIndex = (prevIndex + 1) % movies.length;
+  //       return nextIndex;
+  //     });
+  //   }, 2000);
 
-    return () => clearInterval(timer);
-  }, [movies]);
+  //   return () => clearInterval(timer);
+  // }, [movies]);
 
   return (
     <div className="relative text-[1.2vw] text-white">
@@ -47,7 +47,7 @@ function FeatureMovies() {
       <PaginateIndicator
         movies={movies}
         movieIdActive={movieIdActive}
-        // setMovieIdActive={setMovieIdActive}
+        setMovieIdActive={setMovieIdActive}
       />
     </div>
   );
