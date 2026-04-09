@@ -49,7 +49,7 @@ function MediaList({ title, tabs }) {
             pathImg={i.backdrop_path}
             point={i?.vote_average}
             title={i.title || i?.original_name}
-            mediaType={i.media_type}
+            mediaType={i.media_type || (tabIdActive === "tv" && "tv")}
           />
         ))}
       </div>

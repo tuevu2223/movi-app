@@ -15,3 +15,16 @@ export const TRENDING_TABS = [
     url: "https://api.themoviedb.org/3/trending/tv/day",
   },
 ];
+
+export const TOP_RATED_TABS = [
+  {
+    id: "movie",
+    label: "Movie",
+    url: "https://api.themoviedb.org/3/movie/top_rated",
+  },
+  {
+    id: "tv",
+    label: "TV Show",
+    url: "https://api.themoviedb.org/3/tv/top_rated",
+  },
+];
