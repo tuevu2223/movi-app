@@ -19,7 +19,7 @@ function Banner({ movieDetail, isLoading }) {
   }
 
   return (
-    <div className="relative overflow-hidden text-[1.2vw] text-white">
+    <div className="relative overflow-hidden text-[1.2vw] text-white shadow shadow-white/30">
       <div className="absolute inset-0 brightness-40">
         <img
           className="aspect-video w-full"
