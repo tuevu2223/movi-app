@@ -1,27 +1,16 @@
 import CardMovie from "@/components/CardMovie";
-import { useEffect, useState } from "react";
+import useFetch from "@/hooks/useFetch";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 function MediaList({ title, tabs }) {
-  const [mediaList, setMediaList] = useState([]);
   const [tabIdActive, setTabIdActive] = useState(tabs[0].id);
 
-  useEffect(() => {
-    const url = tabs.find((tab) => tab.id === tabIdActive).url;
-    if (url) {
-      fetch(`${url}`, {
-        method: "GET",
-        headers: {
-          accept: "application/json",
-          Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}`,
-        },
-      }).then(async (res) => {
-        const data = await res.json();
-        const trendingMediaList = data?.results.slice(0, 12);
-        setMediaList(trendingMediaList);
-      });
-    }
-  }, [tabIdActive, tabs]);
+  const url = tabs.find((tab) => tab.id === tabIdActive).url;
+  const { data: mediaListResult } = useFetch({ url });
+
+  const mediaList = mediaListResult.results || [];
+  console.log({ mediaListResult });
 
   return (
     <div className="flex flex-col gap-4 bg-black px-8 py-12 text-[1.2vw] text-white">
