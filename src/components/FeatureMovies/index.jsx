@@ -1,6 +1,6 @@
-import PaginateIndicator from "./PaginateIndicator";
-import Movie from "./Movie";
 import { useEffect, useState } from "react";
+import Movie from "./Movie";
+import PaginateIndicator from "./PaginateIndicator";
 
 function FeatureMovies() {
   const [movies, setMovies] = useState([]);
@@ -38,7 +38,7 @@ function FeatureMovies() {
   // }, [movies]);
 
   return (
-    <div className="relative text-[1.2vw] text-white">
+    <div className="relative text-[1.5vw] text-white">
       {movies
         .filter((i) => i.id === movieIdActive)
         .map((movie) => (

@@ -2,7 +2,6 @@ const CircularProgressBar = ({
   percent,
   size = 3,
   strokeWidth = 0.25,
-  strokeColor
 }) => {
   const radius = size / 2 - strokeWidth;
   const circumference = 2 * Math.PI * radius;
@@ -22,7 +21,7 @@ const CircularProgressBar = ({
           r={`${radius}vw`}
           cx={`${size / 2}vw`}
           cy={`${size / 2}vw`}
-          stroke={strokeColor}
+          stroke={`${percent > 70 ? "green" : percent > 50 ? "yellow" : "red"}`}
           fill="none"
           strokeWidth={`${strokeWidth}vw`}
           strokeDasharray={`${circumference}vw`}

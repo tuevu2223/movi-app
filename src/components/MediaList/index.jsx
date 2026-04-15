@@ -1,5 +1,6 @@
+import CardMovie from "@/components/CardMovie";
 import { useEffect, useState } from "react";
-import CardMovie from "./CardMovie";
+import { Link } from "react-router-dom";
 
 function MediaList({ title, tabs }) {
   const [mediaList, setMediaList] = useState([]);
@@ -45,6 +46,7 @@ function MediaList({ title, tabs }) {
         {mediaList.map((i) => (
           <CardMovie
             key={i.id}
+            id={i.id}
             date={i?.release_date || i?.first_air_date}
             pathImg={i.backdrop_path}
             point={i?.vote_average}
