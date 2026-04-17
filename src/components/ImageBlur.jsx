@@ -11,7 +11,11 @@ const ImageBlur = ({ src, width, height, className }) => {
     img.onload = () => {
       setCurrentSrc(src);
     };
-  }, [src])
+
+    return () => {
+      img.onload = null;
+    };
+  }, [src]);
 
   return (
     <img
