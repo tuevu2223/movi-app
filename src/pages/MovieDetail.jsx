@@ -1,66 +1,23 @@
-import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import RelatedMediaList from "@/components/MediaDetails/RelatedMediaList";
 import ActorList from "@/components/MediaDetails/ActorList";
 import Banner from "@/components/MediaDetails/Banner";
 import Information from "@/components/MediaDetails/Information";
+import useFetch from "@/hooks/useFetch";
 
 function MovieDetail() {
-  const [movieDetail, setMovieDetail] = useState({});
-  const [relatedMediaList, setRelatedMediaList] = useState([]);
-  const [isLoadingMovieDetail, setIsLoadingMovieDetail] = useState(false);
-  const [isRelatedLoading, setIsRelatedLoading] = useState(false);
   const { id } = useParams();
 
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setIsLoadingMovieDetail(true);
-    fetch(
-      `https://api.themoviedb.org/3/movie/${id}?append_to_response=credits`,
-      {
-        method: "GET",
-        headers: {
-          accept: "application/json",
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlMzQ3MTc2ZWUyYWI4Njc4ZWRlN2ZlMjBkZWQ5MmNkNCIsIm5iZiI6MTc2MDY5MTg1MC4yNzksInN1YiI6IjY4ZjIwNjhhNzVjOTExZWUxYjc3ZDk2NiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.LtwJzSShEpGK3gzQPQSDXqCnNgqRVnt005AFpQ3fv6w",
-        },
-      },
-    )
-      .then(async (res) => {
-        const data = await res.json();
-        setMovieDetail(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {
-        setIsLoadingMovieDetail(false);
-      });
-  }, [id]);
+  const { data: movieDetail, isLoading: isLoadingMovieDetail } = useFetch({
+    url: `/movie/${id}?append_to_response=credits`,
+  });
 
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setIsRelatedLoading(true);
-    fetch(`https://api.themoviedb.org/3/movie/${id}/recommendations`, {
-      method: "GET",
-      headers: {
-        accept: "application/json",
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlMzQ3MTc2ZWUyYWI4Njc4ZWRlN2ZlMjBkZWQ5MmNkNCIsIm5iZiI6MTc2MDY5MTg1MC4yNzksInN1YiI6IjY4ZjIwNjhhNzVjOTExZWUxYjc3ZDk2NiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.LtwJzSShEpGK3gzQPQSDXqCnNgqRVnt005AFpQ3fv6w",
-      },
-    })
-      .then(async (res) => {
-        const data = await res.json();
-        console.log({ data });
-        setRelatedMediaList(data.results.slice(0, 12));
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {
-        setIsRelatedLoading(false);
-      });
-  }, [id]);
+  const { data: relatedMediaListResult, isLoading: isRelatedLoading } =
+    useFetch({
+      url: `/movie/${id}/recommendations`,
+    });
+
+  const relatedMediaList = (relatedMediaListResult.results || []).slice(0, 12);
 
   const cast = movieDetail.credits?.cast;
 

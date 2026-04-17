@@ -1,28 +1,14 @@
 import CardMovie from "@/components/CardMovie";
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import useFetch from "@/hooks/useFetch";
+import { useState } from "react";
 
 function MediaList({ title, tabs }) {
-  const [mediaList, setMediaList] = useState([]);
   const [tabIdActive, setTabIdActive] = useState(tabs[0].id);
 
-  useEffect(() => {
-    const url = tabs.find((tab) => tab.id === tabIdActive).url;
-    if (url) {
-      fetch(`${url}`, {
-        method: "GET",
-        headers: {
-          accept: "application/json",
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlMzQ3MTc2ZWUyYWI4Njc4ZWRlN2ZlMjBkZWQ5MmNkNCIsIm5iZiI6MTc2MDY5MTg1MC4yNzksInN1YiI6IjY4ZjIwNjhhNzVjOTExZWUxYjc3ZDk2NiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.LtwJzSShEpGK3gzQPQSDXqCnNgqRVnt005AFpQ3fv6w",
-        },
-      }).then(async (res) => {
-        const data = await res.json();
-        const trendingMediaList = data?.results.slice(0, 12);
-        setMediaList(trendingMediaList);
-      });
-    }
-  }, [tabIdActive, tabs]);
+  const url = tabs.find((tab) => tab.id === tabIdActive).url;
+  const { data: mediaListResult } = useFetch({ url });
+
+  const mediaList = mediaListResult.results || [];
 
   return (
     <div className="flex flex-col gap-4 bg-black px-8 py-12 text-[1.2vw] text-white">
