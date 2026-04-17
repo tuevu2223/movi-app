@@ -1,7 +1,6 @@
 import CardMovie from "@/components/CardMovie";
 import useFetch from "@/hooks/useFetch";
 import { useState } from "react";
-import { Link } from "react-router-dom";
 
 function MediaList({ title, tabs }) {
   const [tabIdActive, setTabIdActive] = useState(tabs[0].id);
@@ -10,7 +9,6 @@ function MediaList({ title, tabs }) {
   const { data: mediaListResult } = useFetch({ url });
 
   const mediaList = mediaListResult.results || [];
-  console.log({ mediaListResult });
 
   return (
     <div className="flex flex-col gap-4 bg-black px-8 py-12 text-[1.2vw] text-white">
