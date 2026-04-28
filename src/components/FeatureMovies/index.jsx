@@ -1,16 +1,22 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Movie from "./Movie";
 import PaginateIndicator from "./PaginateIndicator";
 import useFetch from "@/hooks/useFetch";
 
 function FeatureMovies() {
   const [selectId, setSelectId] = useState();
+  const [rotationSeed, setRotationSeed] = useState(0);
 
   const { data: moviesResult } = useFetch({ url: "/movie/popular" });
 
-  const movies = (moviesResult.results || []).slice(0, 4);
+  const movies = useMemo(() => (moviesResult.results || []).slice(0, 4), [moviesResult.results]);
 
   const movieIdActive = selectId || movies[0]?.id;
+
+  const handleMovieSelect = (movieId) => {
+    setSelectId(movieId);
+    setRotationSeed((seed) => seed + 1);
+  };
 
   useEffect(() => {
     if (movies.length <= 1) {
@@ -33,7 +39,7 @@ function FeatureMovies() {
     return () => {
       clearInterval(intervalId);
     };
-  }, [movies]);
+  }, [movies, rotationSeed]);
 
   return (
     <div className="relative text-[1.5vw] text-white">
@@ -45,7 +51,7 @@ function FeatureMovies() {
       <PaginateIndicator
         movies={movies}
         movieIdActive={movieIdActive}
-        setMovieIdActive={setSelectId}
+        setMovieIdActive={handleMovieSelect}
       />
     </div>
   );
