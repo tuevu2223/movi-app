@@ -9,7 +9,12 @@ function CardMovie({ pathImg, point, title, date, mediaType, id }) {
       to={`/movie/${id}`}
     >
       <div>
-        <ImageBlur src={`https://image.tmdb.org/t/p/w500${pathImg}`} width={166} height={93} />
+        <ImageBlur
+          src={`https://image.tmdb.org/t/p/w500${pathImg}`}
+          width={500}
+          height={278}
+          className="w-full aspect-[18/10] object-cover"
+        />
         {/* <img src={`https://image.tmdb.org/t/p/w500${pathImg}`} /> */}
         {mediaType === "tv" && (
           <div className="absolute top-1 right-1 rounded bg-black p-1 font-bold shadow-2xl">
