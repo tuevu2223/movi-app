@@ -5,34 +5,34 @@ import Banner from "@/components/MediaDetails/Banner";
 import Information from "@/components/MediaDetails/Information";
 import useFetch from "@/hooks/useFetch";
 
-function MovieDetail() {
+function TVShowDetail() {
   const { id } = useParams();
 
-  const { data: movieDetail, isLoading: isLoadingMovieDetail } = useFetch({
-    url: `/movie/${id}?append_to_response=credits`,
+  const { data: tvDetail, isLoading: isLoadingTVDetail } = useFetch({
+    url: `/tv/${id}?append_to_response=credits`,
   });
 
   const { data: relatedMediaListResult, isLoading: isRelatedLoading } =
     useFetch({
-      url: `/movie/${id}/recommendations`,
+      url: `/tv/${id}/recommendations`,
     });
 
   const relatedMediaList = (relatedMediaListResult.results || []).slice(0, 12);
 
-  const cast = movieDetail.credits?.cast;
+  const cast = tvDetail.credits?.cast;
 
   return (
     <div className="">
       <Banner
-        credits={movieDetail.credits}
-        backdropPath={movieDetail.backdrop_path}
-        posterPath={movieDetail.poster_path}
-        originalTitle={movieDetail.original_title}
-        releaseDate={movieDetail.release_date}
-        genres={movieDetail.genres}
-        voteAverage={movieDetail.vote_average}
-        overview={movieDetail.overview}
-        isLoading={isLoadingMovieDetail}
+        credits={tvDetail.credits}
+        backdropPath={tvDetail.backdrop_path}
+        posterPath={tvDetail.poster_path}
+        originalTitle={tvDetail.original_name}
+        releaseDate={tvDetail.first_air_date}
+        genres={tvDetail.genres}
+        voteAverage={tvDetail.vote_average}
+        overview={tvDetail.overview}
+        isLoading={isLoadingTVDetail}
       />
       <div className="w-full bg-black p-8 text-white">
         <div className="m-auto flex max-w-7xl gap-4 lg:gap-8">
@@ -41,15 +41,15 @@ function MovieDetail() {
             <RelatedMediaList data={relatedMediaList} />
           </div>
           <Information
-            originalName={movieDetail.original_title}
-            originalCountry={movieDetail.origin_country}
-            status={movieDetail.status}
-            budget={movieDetail.budget}
-            revenue={movieDetail.revenue}
+            originalName={tvDetail.original_title}
+            originalCountry={tvDetail.origin_country}
+            status={tvDetail.status}
+            budget={tvDetail.budget}
+            revenue={tvDetail.revenue}
           />
         </div>
       </div>
     </div>
   );
 }
-export default MovieDetail;
+export default TVShowDetail;

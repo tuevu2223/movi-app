@@ -3,8 +3,18 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { groupBy } from "lodash";
 import CircularProgressBar from "../CircularProgressBar";
 
-function Banner({ movieDetail, isLoading }) {
-  const crews = (movieDetail.credits?.crew || []).filter((crew) =>
+function Banner({
+  isLoading,
+  credits,
+  backdropPath,
+  posterPath,
+  originalTitle,
+  releaseDate,
+  genres,
+  voteAverage,
+  overview,
+}) {
+  const crews = (credits?.crew || []).filter((crew) =>
     ["Director", "Screenplay", "Writer", "Driver"].includes(crew.job),
   );
 
@@ -23,7 +33,7 @@ function Banner({ movieDetail, isLoading }) {
       <div className="absolute inset-0 brightness-40">
         <img
           className="aspect-video w-full"
-          src={`https://image.tmdb.org/t/p/original/${movieDetail.backdrop_path}`}
+          src={`https://image.tmdb.org/t/p/original/${backdropPath}`}
           alt=""
         />
       </div>
@@ -31,22 +41,20 @@ function Banner({ movieDetail, isLoading }) {
         <div className="flex-1">
           <img
             className="w-full"
-            src={`https://image.tmdb.org/t/p/original/${movieDetail.poster_path}`}
+            src={`https://image.tmdb.org/t/p/original/${posterPath}`}
             alt=""
           />
         </div>
         <div className="flex flex-2 flex-col gap-2 lg:gap-4">
-          <p className="text-[2vw] font-bold">{movieDetail.original_title}</p>
+          <p className="text-[2vw] font-bold">{originalTitle}</p>
           <div className="flex items-center gap-2">
-            <span className="">{movieDetail.release_date}</span>
-            <span>
-              {(movieDetail.genres || []).map((i) => i.name).join(", ")}
-            </span>
+            <span className="">{releaseDate}</span>
+            <span>{(genres || []).map((i) => i.name).join(", ")}</span>
           </div>
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2">
               <CircularProgressBar
-                percent={Math.round((movieDetail.vote_average || 0) * 10)}
+                percent={Math.round((voteAverage || 0) * 10)}
               />
               <span>Rating</span>
             </div>
@@ -57,7 +65,7 @@ function Banner({ movieDetail, isLoading }) {
           </div>
           <div className="">
             <p className="font-bold">Overview</p>
-            <p>{movieDetail.overview}</p>
+            <p>{overview}</p>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
