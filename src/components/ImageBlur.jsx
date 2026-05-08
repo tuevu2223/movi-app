@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 const ImageBlur = ({ src, width, height, className }) => {
   const [currentSrc, setCurrentSrc] = useState(
-    `https://placehold.co/${width}x${height}?text=Loading`,
+    `https://placehold.co/${width}x${height}?text=No image`,
   );
 
   useEffect(() => {
@@ -21,7 +21,7 @@ const ImageBlur = ({ src, width, height, className }) => {
     <img
       width={width}
       height={height}
-      className={currentSrc === src ? className : `${className} blur-md`}
+      className={(currentSrc === src || currentSrc) ? className : `${className} blur-md object-cover`}
       src={currentSrc}
     />
   );

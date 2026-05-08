@@ -1,15 +1,26 @@
+import { useModelTraillerContext } from "@/context/TraillerModelProvider";
+import useFetch from "@/hooks/useFetch";
 import { faPlay } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { memo } from "react";
+import { memo, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 const TMDB_IMAGE_BASE_URL = "https://image.tmdb.org/t/p/original";
 const FALLBACK_BACKDROP_URL = "https://placehold.co/1280x720?text=No+Image";
 
 function Movie({ movie }) {
+  const { setShowModel, setKeyLink } = useModelTraillerContext();
+  const { data } = useFetch({ url: `/movie/${movie.id}/videos` });
+
+  const traillerVideoKey = data.results?.find((i) => i.type === "Trailer").key;
+
+  useEffect(() => {
+    setKeyLink(traillerVideoKey);
+  }, [traillerVideoKey]);
+
   if (!movie) {
     return null;
-  }
+  } 
 
   const { backdrop_path, id, overview, release_date, title } = movie;
   const backdropUrl = backdrop_path
@@ -39,7 +50,12 @@ function Movie({ movie }) {
           <p>{overview}</p>
         </div>
         <div>
-          <button className="mr-2 cursor-pointer rounded-lg bg-white px-5 py-3 text-black">
+          <button
+            onClick={() => {
+              setShowModel(true);
+            }}
+            className="mr-2 cursor-pointer rounded-lg bg-white px-5 py-3 text-black"
+          >
             <FontAwesomeIcon icon={faPlay} />
             <span className="ml-2">Trailer</span>
           </button>

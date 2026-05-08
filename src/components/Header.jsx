@@ -6,16 +6,18 @@ function Header() {
   return (
     <header className="flex items-center justify-between bg-black px-8 py-4">
       <div className="flex gap-4">
-        <Link to={'/'}>
+        <Link to={"/"}>
           <img src="/Logonetflix.png" alt="" className="w-24" />
         </Link>
-        <div className="text-white">Phim</div>
-        <div className="text-white">Truyền hình</div>
+        <Link to={'/search?mediaType=movie'} className="text-white">Movie</Link>
+        <Link to={'/search?mediaType=tv'} className="text-white">TV Show</Link>
       </div>
-      <FontAwesomeIcon
-        icon={faMagnifyingGlass}
-        className="cursor-pointer text-white"
-      />
+      <Link to={'/search'}>
+        <FontAwesomeIcon
+          icon={faMagnifyingGlass}
+          className="cursor-pointer text-white"
+        />
+      </Link>
     </header>
   );
 }

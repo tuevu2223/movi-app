@@ -4,12 +4,14 @@ import ActorList from "@/components/MediaDetails/ActorList";
 import Banner from "@/components/MediaDetails/Banner";
 import Information from "@/components/MediaDetails/Information";
 import useFetch from "@/hooks/useFetch";
+import TVInformation from "@/components/MediaDetails/TVInformation";
+import SeasonsList from "@/components/MediaDetails/SeasonsList";
 
 function TVShowDetail() {
   const { id } = useParams();
 
   const { data: tvDetail, isLoading: isLoadingTVDetail } = useFetch({
-    url: `/tv/${id}?append_to_response=credits`,
+    url: `/tv/${id}?append_to_response=aggregate_credits,credits,videos`,
   });
 
   const { data: relatedMediaListResult, isLoading: isRelatedLoading } =
@@ -20,6 +22,25 @@ function TVShowDetail() {
   const relatedMediaList = (relatedMediaListResult.results || []).slice(0, 12);
 
   const cast = tvDetail.credits?.cast;
+
+  const targetJobs = ["Director", "Writer"];
+  const jobGroup =
+    tvDetail.aggregate_credits?.crew.reduce((acc, person) => {
+      const { id, name, jobs } = person;
+
+      for (const item of jobs) {
+        if (targetJobs.includes(item.job)) {
+          acc[item.job] = acc[item.job] || [];
+
+          acc[item.job].push({ id, name, job: item.job });
+        }
+      }
+      return acc;
+    }, {}) || {};
+
+  const traillerVideoKey = tvDetail.videos?.results.find(
+    (i) => i.type === "Trailer",
+  ).key;
 
   return (
     <div className="">
@@ -33,19 +54,26 @@ function TVShowDetail() {
         voteAverage={tvDetail.vote_average}
         overview={tvDetail.overview}
         isLoading={isLoadingTVDetail}
+        jobGroup={jobGroup || {}}
+        traillerVideoKey={traillerVideoKey}
       />
       <div className="w-full bg-black p-8 text-white">
-        <div className="m-auto flex max-w-7xl gap-4 lg:gap-8">
+        <div className="container-app">
           <div className="flex flex-2 flex-col gap-4">
             <ActorList cast={cast || []} isLoading={isRelatedLoading} />
-            <RelatedMediaList data={relatedMediaList} />
+            <SeasonsList seasons={tvDetail.seasons} />
+            <RelatedMediaList
+              title={"More like this"}
+              data={relatedMediaList}
+            />
           </div>
-          <Information
-            originalName={tvDetail.original_title}
+          <TVInformation
+            originalName={tvDetail.name}
             originalCountry={tvDetail.origin_country}
             status={tvDetail.status}
             budget={tvDetail.budget}
             revenue={tvDetail.revenue}
+            networks={tvDetail.networks}
           />
         </div>
       </div>

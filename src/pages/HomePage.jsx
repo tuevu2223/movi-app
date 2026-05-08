@@ -1,3 +1,5 @@
+import "videojs-youtube";
+import "video.js/dist/video-js.css";
 import FeatureMovies from "../components/FeatureMovies";
 import MediaList from "../components/MediaList";
 import { TOP_RATED_TABS, TRENDING_TABS } from "../libs/constant";

@@ -10,7 +10,7 @@ function CardMovie({ pathImg, point, title, date, mediaType, id }) {
     >
       <div>
         <ImageBlur
-          src={`https://image.tmdb.org/t/p/w500${pathImg}`}
+          src={pathImg && `https://image.tmdb.org/t/p/w500${pathImg}`}
           width={500}
           height={278}
           className="aspect-[18/10] w-full object-cover"

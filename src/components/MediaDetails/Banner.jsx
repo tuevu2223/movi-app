@@ -1,11 +1,12 @@
 import { faPlay } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { groupBy } from "lodash";
 import CircularProgressBar from "../CircularProgressBar";
+import { useModelTraillerContext } from "@/context/TraillerModelProvider";
+import { useEffect } from "react";
 
 function Banner({
   isLoading,
-  credits,
+  jobGroup,
   backdropPath,
   posterPath,
   originalTitle,
@@ -13,12 +14,18 @@ function Banner({
   genres,
   voteAverage,
   overview,
+  traillerVideoKey,
 }) {
-  const crews = (credits?.crew || []).filter((crew) =>
-    ["Director", "Screenplay", "Writer", "Driver"].includes(crew.job),
-  );
+  // const crews = (credits?.crew || []).filter((crew) =>
+  //   ["Director", "Screenplay", "Writer", "Driver"].includes(crew.job),
+  // );
 
-  const jobGroup = groupBy(crews, "job");
+  // const jobGroup = groupBy(crews, "job");
+
+  const { setShowModel, setKeyLink } = useModelTraillerContext();
+  useEffect(() => {
+    setKeyLink(traillerVideoKey);
+  }, [traillerVideoKey]);
 
   if (isLoading) {
     return (
@@ -58,7 +65,9 @@ function Banner({
               />
               <span>Rating</span>
             </div>
-            <button className="cursor-pointer">
+            <button className="cursor-pointer" onClick={() => {
+              setShowModel(true)
+            }}>
               <FontAwesomeIcon icon={faPlay} />
               Trailer
             </button>
@@ -70,7 +79,7 @@ function Banner({
 
           <div className="grid grid-cols-2 gap-4">
             {Object.keys(jobGroup).map((jobName) => (
-              <div key={jobName} className="">
+              <div key={jobName.name} className="">
                 <p className="font-bold">{jobName}</p>
                 <p>{jobGroup[jobName].map((job) => job.name).join(", ")}</p>
               </div>
