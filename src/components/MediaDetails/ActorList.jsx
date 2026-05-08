@@ -19,6 +19,7 @@ function ActorList({ cast, isLoading }) {
         {currentCast.map((i) => (
           <ActorInfo
             key={i.id}
+            id={i.id}
             profilePath={i.profile_path}
             name={i.name}
             character={i.character}

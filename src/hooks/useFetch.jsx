@@ -5,7 +5,11 @@ const DEFAULT_HEADER = {
   Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}`,
 };
 
-export default function useFetch({ url = "", headers, method = "GET" }) {
+export default function useFetch({
+  url = "",
+  headers,
+  method = "GET",
+}) {
   const [data, setData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 

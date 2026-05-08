@@ -1,1 +1,7 @@
 @import "tailwindcss";
+
+@layer components {
+    .container-app {
+        @apply m-auto flex max-w-7xl gap-4 lg:gap-8
+    }
+}

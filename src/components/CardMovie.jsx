@@ -6,14 +6,14 @@ function CardMovie({ pathImg, point, title, date, mediaType, id }) {
   return (
     <Link
       className="relative overflow-hidden rounded-lg border"
-      to={`/movie/${id}`}
+      to={`/${mediaType === "tv" ? "tv" : "movie"}/${id}`}
     >
       <div>
         <ImageBlur
-          src={`https://image.tmdb.org/t/p/w500${pathImg}`}
+          src={pathImg && `https://image.tmdb.org/t/p/w500${pathImg}`}
           width={500}
           height={278}
-          className="w-full aspect-[18/10] object-cover"
+          className="aspect-[18/10] w-full object-cover"
         />
         {/* <img src={`https://image.tmdb.org/t/p/w500${pathImg}`} /> */}
         {mediaType === "tv" && (
